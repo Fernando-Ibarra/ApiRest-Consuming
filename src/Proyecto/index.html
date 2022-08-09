@@ -11,24 +11,21 @@
     <header>
         <div class="header--title-container">
             <h1>Random Cats</h1>
+            <span id="error"></span>
         </div>
     </header>
     <main>
         <section>
             <div class="main-button-container">
-                <button type="button" class="button" onclick="reload()">Recargar</button>
+                <button type="button" class="button" onclick="loadRandomMichis()">Recargar</button>
             </div>
             <article class="main-img-container">
                 <img id="img1" alt="Foto Gatito Aleatorio">
-                <button type="button" class="button">Guardar foto en favoritos</button>
+                <button type="button" class="button" onclick="saveFavouriteMichis()">Guardar foto en favoritos</button>
             </article>
             <article class="main-img-container">
                 <img id="img2" alt="Foto Gatito Aleatorio">
-                <button type="button" class="button">Guardar foto en favoritos</button>
-            </article>
-            <article class="main-img-container">
-                <img id="img3" alt="Foto Gatito Aleatorio">
-                <button type="button" class="button">Guardar foto en favoritos</button>
+                <button type="button" class="button" onclick="saveFavouriteMichis()">Guardar foto en favoritos</button>
             </article>
         </section>
         <section class="main--title-container">
