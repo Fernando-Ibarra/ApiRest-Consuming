@@ -4,6 +4,7 @@
     --light-Green: #45B39D;
     --just-white: #FFFFFF;
     --bold-Red: #BA4A00;
+    --Red: #FF0000;
 }
 * {
     box-sizing: border-box;
@@ -42,7 +43,6 @@ main {
     width: 100%;
     height: auto;
     background-color: var(--just-white);
-    margin-bottom: 50px;
 }
 .main-button-container {
     width: 100%;
@@ -55,6 +55,18 @@ main {
     width: 150px;
     height: 48px;
     background-color: var(--light-Salmon);
+    border: none;
+    border-radius: 30px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1.8rem;
+    color: var(--just-white);
+    font-family: 'DM Sans', sans-serif;
+}
+.error {
+    width: 100%;
+    height: 48px;
+    background: var(--Red);
     border: none;
     border-radius: 30px;
     font-size: 1.4rem;
@@ -93,7 +105,7 @@ main {
     color: var(--just-white);
     font-family: 'DM Sans', sans-serif;
 }
-.main-fav-container {
+.main--favourite-container {
     width: 100%;
     height: auto;
     padding-top: 15px;
@@ -101,7 +113,13 @@ main {
     align-self: center;
     text-align: center;
 }
-.main-fav-container img {
+.main--favourite-container div h1 {
+    font-size: 2.4rem;
+    font-weight: bold;
+    line-height: 2.6rem;
+    color: var(--light-Green);
+}
+.main--favourite-container article img {
     min-width: 288px;
     width: 100%;
     height: 50%;
@@ -111,7 +129,7 @@ main {
     background-position: center;
     background-repeat: no-repeat;
 }
-.main-fav-container button{
+.main--favourite-container article button{
     width: 150px;
     height: 48px;
     background-color: var(--light-Salmon);
@@ -122,30 +140,7 @@ main {
     line-height: 1.8rem;
     color: var(--just-white);
     font-family: 'DM Sans', sans-serif;
-}
-.main--title-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 320px;
-    width: 100%;
-    height: 50px;
-    text-align: center;
-}
-.title-container {
-    width: 100%;
-    min-width: 288px;
-    max-width: 900px;
-    height: 250px;
-    margin-top: 35px;
-    align-self: center;
-}
-.title-container h1 {
-    font-size: 2.4rem;
-    font-weight: bold;
-    line-height: 2.6rem;
-    color: var(--light-Green);
+    margin-bottom: 35px;
 }
 footer {
     display: flex;
