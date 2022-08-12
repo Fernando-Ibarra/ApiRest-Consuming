@@ -1,8 +1,10 @@
-const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2&api_key=0bcad1ba-f0f3-470a-b522-db98ddac5976';
+const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2';
 
-const API_URL_FAVOURITES = 'https://api.thecatapi.com/v1/favourites?api_key=0bcad1ba-f0f3-470a-b522-db98ddac5976';
+const API_URL_FAVOURITES = 'https://api.thecatapi.com/v1/favourites';
 
-const API_URL_FAVOURITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}?api_key=0bcad1ba-f0f3-470a-b522-db98ddac5976`;
+const API_URL_FAVOURITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`;
+
+const API_URL_UPLOAD = 'https://api.thecatapi.com/v1/images/upload';
 
 const spanError = document.getElementById('error');
 
@@ -29,7 +31,12 @@ async function loadRandomMichis() {
 };
 
 async function loadFavouritesMichis() {
-    const res = await fetch(API_URL_FAVOURITES);
+    const res = await fetch(API_URL_FAVOURITES, {
+        method: 'GET',
+        headers: {
+            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976'
+        }
+    });
     const data = await res.json();
     console.log('Favoritos');
     console.log(data);
@@ -66,6 +73,7 @@ async function saveFavouriteMichi(id) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
         },
         body: JSON.stringify({
             image_id: id
@@ -87,6 +95,9 @@ async function saveFavouriteMichi(id) {
 async function deleteFavouriteMichi(id) {
     const res = await fetch(API_URL_FAVOURITES_DELETE(id), {
         method: 'DELETE',
+        headers: {
+            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
+        }
     });
     const data = await res.json();
 
@@ -95,6 +106,44 @@ async function deleteFavouriteMichi(id) {
     } else {
         console.log('Michi eliminado de favoritos');
         loadFavouritesMichis();
+    }
+}
+
+async function uploadMichiPhoto() {
+    const form = document.getElementById('uploadingForm');
+    const formData = new FormData(form);
+    console.log(formData.get('file'));
+
+    const res = await fetch(API_URL_UPLOAD,{
+        method: 'POST',
+        headers: {
+            // 'Content-Type': 'multipart/form-data',
+            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
+        },
+        body: formData,
+    })
+
+    const data = await res.json();
+
+    if (res.status !== 201) {
+        spanError.innerHTML = "Hubo un error - " + res.status + " : " + data.message;
+        console.log({data});
+    } else {
+        console.log('Foto de Michi subida');
+        console.log({data});
+        console.log(data.url);
+        saveFavouriteMichi(data.id);
+    }
+}
+
+const previewImg = () => {
+    const file = document.getElementById('file').files;
+    if (file.length > 0) {
+        const fileReader = new FileReader();
+        fileReader.onload = function(e) {
+            document.getElementById('preview').setAttribute("src", e.target.result);
+        };
+        fileReader.readAsDataURL(file[0]);
     }
 }
 

@@ -28,10 +28,20 @@
                 <button id="btn2">Guardar foto en favoritos</button>
             </article>
         </section>
-        <section class="main--favourite-container" id="main--favourites-container">
-            <div class="title-container">
+
+        <section id="uploadingMichi" class="main--uploading-container">
+            <div>
                 <h1>Favorites Cats</h1>
             </div>
+            <form id="uploadingForm">
+                <label for="file" class="custom-file-upload">Selecciona la foto<i class="fa-solid fa-camera"></i></label>
+                <input type="file" name="file" id="file" onchange="previewImg()">
+                <img id="preview"/>
+                <button type="button" onclick="uploadMichiPhoto()" id="submitCat">Subir foto<i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </section>
+
+        <section class="main--favourite-container" id="main--favourites-container">
         </section>
     </main>
     <footer>
