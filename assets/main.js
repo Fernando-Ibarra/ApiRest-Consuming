@@ -1,21 +1,29 @@
-const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2';
+const api = axios.create({
+    baseURL: 'https://api.thecatapi.com/v1'
+});
+api.defaults.headers.common['X-API-KEY'] = '0bcad1ba-f0f3-470a-b522-db98ddac5976';
 
-const API_URL_FAVOURITES = 'https://api.thecatapi.com/v1/favourites';
+// const API_URL_RANDOM = 'https://api.thecatapi.com/v1/images/search?limit=2';
 
-const API_URL_FAVOURITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`;
+// const API_URL_FAVOURITES = 'https://api.thecatapi.com/v1/favourites';
+
+// const API_URL_FAVOURITES_DELETE = (id) => `https://api.thecatapi.com/v1/favourites/${id}`;
 
 const API_URL_UPLOAD = 'https://api.thecatapi.com/v1/images/upload';
 
 const spanError = document.getElementById('error');
 
 async function loadRandomMichis() {
-    const res = await fetch(API_URL_RANDOM);
-    const data = await res.json();
+    // const res = await fetch(API_URL_RANDOM);
+    // const data = await res.json();
+
+    const { data, status } = await api.get('/images/search?limit=2',{});
+
     console.log('Random');
     console.log(data);
 
-    if (res.status !== 200) {
-        spanError.innerHTML = "Hubo un error: " + res.status;
+    if (status !== 200) {
+        spanError.innerHTML = "Hubo un error: " + status;
     } else {
         const img1 = document.getElementById('img1');
         const img2 = document.getElementById('img2');
@@ -31,17 +39,23 @@ async function loadRandomMichis() {
 };
 
 async function loadFavouritesMichis() {
-    const res = await fetch(API_URL_FAVOURITES, {
-        method: 'GET',
-        headers: {
-            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976'
-        }
+    // const res = await fetch(API_URL_FAVOURITES, {
+    //     method: 'GET',
+    //     headers: {
+    //         'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976'
+    //     }
+    // });
+    // const data = await res.json();
+
+    const { data, status } = await api.get('/favourites',{
+
     });
-    const data = await res.json();
+
     console.log('Favoritos');
     console.log(data);
-    if (res.status !== 200) {
-        spanError.innerHTML = "Hubo un error - " + res.status + " : " + data.message;
+
+    if (status !== 200) {
+        spanError.innerHTML = "Hubo un error - " + status + " : " + data.message;
     } else {
         const section = document.getElementById('main--favourites-container');
         section.innerHTML = "";
@@ -69,23 +83,26 @@ async function loadFavouritesMichis() {
 };
 
 async function saveFavouriteMichi(id) {
-    const res = await fetch(API_URL_FAVOURITES, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
-        },
-        body: JSON.stringify({
-            image_id: id
-        }),
+    // const res = await fetch(API_URL_FAVOURITES, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
+    //     },
+    //     body: JSON.stringify({
+    //         image_id: id
+    //     }),
+    // });
+    // const data = await res.json();
+    const { data, status } = await api.post('/favourites',{
+        image_id: id,
     });
-    const data = await res.json();
+
     console.log('Save');
-    console.log(res);
     console.log(data);
 
-    if (res.status !== 200) {
-        spanError.innerHTML = "Hubo un error - " + res.status + " : " + data.message;
+    if (status !== 200) {
+        spanError.innerHTML = "Hubo un error - " + status + " : " + data.message;
     } else {
         console.log('Michi guardado en favoritos');
         loadFavouritesMichis();
@@ -93,16 +110,18 @@ async function saveFavouriteMichi(id) {
 }
 
 async function deleteFavouriteMichi(id) {
-    const res = await fetch(API_URL_FAVOURITES_DELETE(id), {
-        method: 'DELETE',
-        headers: {
-            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
-        }
-    });
-    const data = await res.json();
+    // const res = await fetch(API_URL_FAVOURITES_DELETE(id), {
+    //     method: 'DELETE',
+    //     headers: {
+    //         'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
+    //     }
+    // });
+    // const data = await res.json();
 
-    if (res.status !== 200) {
-        spanError.innerHTML = "Hubo un error - " + res.status + " : " + data.message;
+    const { data, status } = await api.delete(`/favourites/${id}`);
+
+    if (status !== 200) {
+        spanError.innerHTML = "Hubo un error - " + status + " : " + data.message;
     } else {
         console.log('Michi eliminado de favoritos');
         loadFavouritesMichis();
@@ -114,16 +133,16 @@ async function uploadMichiPhoto() {
     const formData = new FormData(form);
     console.log(formData.get('file'));
 
-    const res = await fetch(API_URL_UPLOAD,{
-        method: 'POST',
-        headers: {
-            // 'Content-Type': 'multipart/form-data',
-            'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
-        },
-        body: formData,
+     const res = await fetch(API_URL_UPLOAD,{
+         method: 'POST',
+         headers: {
+             // 'Content-Type': 'multipart/form-data',
+             'X-API-KEY':'0bcad1ba-f0f3-470a-b522-db98ddac5976',
+         },
+         body: formData,
     })
-
     const data = await res.json();
+
 
     if (res.status !== 201) {
         spanError.innerHTML = "Hubo un error - " + res.status + " : " + data.message;
